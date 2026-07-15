@@ -17,13 +17,15 @@
     background: var(--bg);
     color: #fff;
     font-family: "Courier New", monospace;
+    overflow-x: hidden;
+  }
+  #page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    overflow-x: hidden;
     padding: 2rem;
   }
   .logo {
@@ -134,10 +136,11 @@
   }
   .chaos {
     position: fixed;
-    font-size: 2rem;
+    top: 0;
     pointer-events: none;
-    animation: fall 1.5s linear forwards;
+    animation: fall 1.2s linear forwards;
     z-index: 999;
+    will-change: transform;
   }
   @keyframes fall {
     from { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
@@ -146,6 +149,7 @@
 </style>
 </head>
 <body>
+<div id="page">
   <h1 class="logo" aria-label="ByteRuckus"><span class="byte">BYTE</span><span class="ruckus">RUCKUS</span></h1>
   <p class="tagline">Disrupting the disruption industry since <em>about 20 minutes ago</em>. We put the "why" in "why does this website exist."</p>
   <button class="btn" id="ruckus-btn">Cause a Ruckus</button>
@@ -160,9 +164,11 @@
     &copy; 2026 ByteRuckus, Inc. &mdash; an actual S-corp, est. July 2026, to everyone's surprise<br>
     a very serious company &middot; <a href="mailto:ruckus@byteruckus.com">ruckus@byteruckus.com</a>
   </footer>
+</div>
 
 <script>
   const EMOJI = ["💥", "🔥", "🧨", "🚨", "💻", "🥴", "📉", "🗯️", "🤖", "🎺"];
+  const page = document.getElementById("page");
   const btn = document.getElementById("ruckus-btn");
   const countEl = document.getElementById("count");
   let count = 0;
@@ -170,17 +176,20 @@
   btn.addEventListener("click", () => {
     count++;
     countEl.textContent = count;
-    document.body.classList.remove("shake");
-    void document.body.offsetWidth; // restart the animation
-    document.body.classList.add("shake");
-    for (let i = 0; i < 24; i++) {
+    page.classList.remove("shake");
+    void page.offsetWidth; // restart the animation
+    page.classList.add("shake");
+    const burst = Math.min(60 + count * 4, 180); // escalates with every click
+    for (let i = 0; i < burst; i++) {
       const e = document.createElement("span");
       e.className = "chaos";
       e.textContent = EMOJI[Math.floor(Math.random() * EMOJI.length)];
       e.style.left = Math.random() * 100 + "vw";
-      e.style.animationDelay = Math.random() * 0.4 + "s";
+      e.style.fontSize = 1.2 + Math.random() * 2.6 + "rem";
+      e.style.animationDuration = 0.7 + Math.random() * 0.8 + "s";
+      e.style.animationDelay = Math.random() * 0.3 + "s";
       document.body.appendChild(e);
-      setTimeout(() => e.remove(), 2000);
+      setTimeout(() => e.remove(), 2200);
     }
     if (count === 10) btn.textContent = "Please Stop";
     if (count === 25) btn.textContent = "You Have a Problem";
