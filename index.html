@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYTERUCKUS — professional ruckus, delivered digitally</title>
+<meta name="description" content="ByteRuckus. We don't know what we do either.">
+<style>
+  :root {
+    --bg: #0d0d12;
+    --hot: #ff2e88;
+    --acid: #a6ff00;
+    --cyan: #00e5ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: #fff;
+    font-family: "Courier New", monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow-x: hidden;
+    padding: 2rem;
+  }
+  .logo {
+    font-size: clamp(2.5rem, 10vw, 7rem);
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    position: relative;
+    animation: flicker 4s infinite;
+  }
+  .logo .byte { color: var(--cyan); }
+  .logo .ruckus { color: var(--hot); }
+  .logo::before, .logo::after {
+    content: "BYTERUCKUS";
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    opacity: 0.8;
+  }
+  .logo::before { color: var(--acid); transform: translate(-3px, 2px); z-index: -1; animation: glitch 2.7s infinite; }
+  .logo::after { color: var(--hot); transform: translate(3px, -2px); z-index: -2; animation: glitch 1.9s infinite reverse; }
+  @keyframes glitch {
+    0%, 90%, 100% { transform: translate(0, 0); }
+    92% { transform: translate(-6px, 3px) skewX(10deg); }
+    94% { transform: translate(5px, -4px) skewX(-15deg); }
+    96% { transform: translate(-3px, 1px); }
+  }
+  @keyframes flicker {
+    0%, 95%, 100% { opacity: 1; }
+    96% { opacity: 0.4; }
+    97% { opacity: 1; }
+    98% { opacity: 0.6; }
+  }
+  .tagline {
+    margin-top: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+    color: #aaa;
+    max-width: 40ch;
+  }
+  .tagline em { color: var(--acid); font-style: normal; }
+  .btn {
+    margin-top: 3rem;
+    font-family: inherit;
+    font-size: 1.4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 1rem 2.5rem;
+    background: var(--hot);
+    color: #000;
+    border: 4px solid #fff;
+    cursor: pointer;
+    box-shadow: 8px 8px 0 var(--acid);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .btn:hover { transform: translate(4px, 4px); box-shadow: 4px 4px 0 var(--acid); }
+  .btn:active { transform: translate(8px, 8px); box-shadow: 0 0 0 var(--acid); }
+  .counter { margin-top: 1.5rem; color: #666; font-size: 0.9rem; }
+  footer {
+    margin-top: 4rem;
+    color: #444;
+    font-size: 0.8rem;
+    line-height: 1.8;
+  }
+  footer a { color: var(--cyan); text-decoration: none; }
+  .shake { animation: shake 0.4s; }
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0) rotate(0); }
+    20% { transform: translate(-12px, 6px) rotate(-2deg); }
+    40% { transform: translate(10px, -8px) rotate(2deg); }
+    60% { transform: translate(-8px, 4px) rotate(-1deg); }
+    80% { transform: translate(6px, -3px) rotate(1deg); }
+  }
+  .chaos {
+    position: fixed;
+    font-size: 2rem;
+    pointer-events: none;
+    animation: fall 1.5s linear forwards;
+    z-index: 999;
+  }
+  @keyframes fall {
+    from { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+  <h1 class="logo" aria-label="ByteRuckus"><span class="byte">BYTE</span><span class="ruckus">RUCKUS</span></h1>
+  <p class="tagline">Disrupting the disruption industry since <em>about 20 minutes ago</em>. We put the "why" in "why does this website exist."</p>
+  <button class="btn" id="ruckus-btn">Cause a Ruckus</button>
+  <p class="counter"><span id="count">0</span> ruckuses caused (this session)</p>
+  <footer>
+    &copy; 2026 ByteRuckus LLC (pending) (probably)<br>
+    a very serious company &middot; <a href="mailto:ruckus@byteruckus.com">ruckus@byteruckus.com</a>
+  </footer>
+
+<script>
+  const EMOJI = ["💥", "🔥", "🧨", "🚨", "💻", "🥴", "📉", "🗯️", "🤖", "🎺"];
+  const btn = document.getElementById("ruckus-btn");
+  const countEl = document.getElementById("count");
+  let count = 0;
+
+  btn.addEventListener("click", () => {
+    count++;
+    countEl.textContent = count;
+    document.body.classList.remove("shake");
+    void document.body.offsetWidth; // restart the animation
+    document.body.classList.add("shake");
+    for (let i = 0; i < 24; i++) {
+      const e = document.createElement("span");
+      e.className = "chaos";
+      e.textContent = EMOJI[Math.floor(Math.random() * EMOJI.length)];
+      e.style.left = Math.random() * 100 + "vw";
+      e.style.animationDelay = Math.random() * 0.4 + "s";
+      document.body.appendChild(e);
+      setTimeout(() => e.remove(), 2000);
+    }
+    if (count === 10) btn.textContent = "Please Stop";
+    if (count === 25) btn.textContent = "You Have a Problem";
+    if (count === 50) btn.textContent = "Seek Help";
+  });
+</script>
+</body>
+</html>
