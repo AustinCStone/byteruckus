@@ -140,20 +140,9 @@
       document.body.appendChild(e);
       setTimeout(() => e.remove(), 2000);
     }
-    const MILESTONES = {
-      10: "Please Stop",
-      25: "You Have a Problem",
-      50: "Seek Help",
-      100: "We Called Your Mother",
-      250: "This Is a Cry for Help",
-      500: "Ruckus Employee of the Month",
-      1000: "👑 CEO of Ruckus"
-    };
-    if (MILESTONES[count]) btn.textContent = MILESTONES[count];
-    if (count === 1000) {
-      btn.style.background = "gold";
-      document.title = "👑 CEO OF RUCKUS — byteruckus.com";
-    }
+    if (count === 10) btn.textContent = "Please Stop";
+    if (count === 25) btn.textContent = "You Have a Problem";
+    if (count === 50) btn.textContent = "Seek Help";
   });
 </script>
 </body>
